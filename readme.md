@@ -41,6 +41,10 @@ Gets the cover art for a book. If called in the loop this function can, (and sho
 ### dt_get_bookbox_comment($post_id=0)
 Gets an extra comment to display in the bookbox. You enter this in the admin in the box that you put the ASIN into. This should be called with no arguments in the loop, or passed the post ID of a book outside of the loop.
 
+## Template Files
+Dead Trees introduces a new post type: dt_book, and a new taxonomy: dt_writer. This means that you can put a file into your theme called type-dt_book.php and it'll be used in place of single.php, and you can add taxonomy-dt_writer.php and it'll be used in place of tag.php. This way you can make your reading list look like a real library!
+
+
 ## On Caching Plugins
 If you use WP Super Cache, you'll need to clear your cache, or turn off caching, when updating the design of the bookbox, (updating deadtree-bookbox.php), and when updating your Amazon Affiliate IDs. Once your changes are made just make sure the cache is clear and turn caching back on.
 
