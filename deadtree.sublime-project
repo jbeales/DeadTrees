@@ -1,0 +1,15 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/John/Work/johnbeales.com/wordpress-plugins/deadtrees"
+		}
+	],
+	"settings":
+	{
+		"xdebug":
+		{
+			"url": "http://johnbeales.local"
+		}
+	}
+}

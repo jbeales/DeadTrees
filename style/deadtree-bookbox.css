@@ -1,0 +1,43 @@
+/* For embedding books  */
+.dt_bookbox {
+	border: 1px solid #ddd;
+	padding:0.5em 1em;
+	line-height:160%;
+	
+}
+.dt_bookbox-image {
+	float:left;
+	margin-right:1em;
+}
+.dt_bookbox-image img {
+	margin:0;
+}
+.dt_bookbox:after {content:".";display:block;height:0;clear:both;visibility:hidden;}
+.dt_bookbox p.bookbox_extra_comment {
+	font-size:0.8333em;
+	display:block;
+	margin-bottom:0.5em;
+}
+
+.dt_bookbox h6 {
+	line-height:1em;
+}
+
+.dt_bookbox p {
+	line-height:1.6em;
+}
+
+.dt_bookbox h6, .dt_bookbox .dt_booklinks, .bookbox .bookbox_extra_comment {
+	margin-left:75px;
+	padding-left:1em;
+}
+.dt_bookbox p.dt_booklinks {
+	margin-bottom:0.5em;
+}
+.dt_bookbox p.dt_bookbox_extra_comment {
+	line-height:1.2em;
+}
+
+
+
+/* end embedding books  */
