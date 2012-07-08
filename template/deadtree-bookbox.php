@@ -1,6 +1,6 @@
 <div class="dt_bookbox">
 <div class="dt_bookbox-image"><?php echo dt_get_bookbox_image(); ?></div>
-<h6><?php _e('Want to read it yourself?', 'deadtree'); ?></h6>
+<h6><?php _e('Want to read it yourself? Get from Amazon:', 'deadtree'); ?></h6>
 <?php
 $comment = dt_get_bookbox_comment();
 if(!empty($comment)) {

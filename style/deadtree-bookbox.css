@@ -21,6 +21,7 @@
 
 .dt_bookbox h6 {
 	line-height:1em;
+	clear:none;
 }
 
 .dt_bookbox p {

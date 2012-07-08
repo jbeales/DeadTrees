@@ -51,6 +51,15 @@ function dt_bookbox() {
 	}
 }
 
+// requires loop, will be used in filters
+// dt_bookbox() is more efficient, since it doesn't use output buffering.
+function dt_get_bookbox() {
+	ob_start();
+	dt_bookbox();
+	$bookbox = ob_get_clean();
+	return $bookbox;
+}
+
 function dt_get_amazon_url($domain = 'amazon.com', $post_id = 0) {
 
 	$url = '';
