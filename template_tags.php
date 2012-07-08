@@ -59,6 +59,7 @@ function dt_get_amazon_url($domain = 'amazon.com', $post_id = 0) {
 
 	if(!empty($post_id)) {
 		
+		$domain = strtolower($domain);
 
 		$asin = '';
 
