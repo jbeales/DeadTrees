@@ -16,23 +16,23 @@ function dt_get_bookbox_item($item, $post_id = NULL) {
 
 
 
-function dt_get_asin_com($post_id = NULL) {
+function dt_get_asin_com($post_id = 0) {
 	return dt_get_bookbox_item('asin_amazon.com', $post_id);
 }
 
-function dt_get_asin_ca($post_id = NULL) {
+function dt_get_asin_ca($post_id = 0) {
 	return dt_get_bookbox_item('asin_amazon.ca', $post_id);
 }
 
-function dt_get_asin_uk($post_id = NULL) {
+function dt_get_asin_uk($post_id = 0) {
 	return dt_get_bookbox_item('asin_amazon.co.uk', $post_id);
 }
 
-function dt_get_bookbox_comment($post_id = NULL) {
+function dt_get_bookbox_comment($post_id = 0) {
 	return dt_get_bookbox_item('comment', $post_id);
 }
 
-function dt_get_bookbox_image($post_id = NULL) {
+function dt_get_bookbox_image($post_id = 0) {
 	$attachment_id = dt_get_bookbox_item('cover_image_attachment_id', $post_id);
 	if(!empty($attachment_id)) {
 		return wp_get_attachment_image($attachment_id, 'dt_book_cover_thumb');
@@ -42,10 +42,12 @@ function dt_get_bookbox_image($post_id = NULL) {
 
 // requires the loop
 function dt_bookbox() {
-	$file = locate_template(array('deadtree-bookbox.php'), true, false);
-	if(empty($file)) {
-		$deadtree = DeadTrees::get_dt();
-		require($deadtree->get_basedir() . '/template/deadtree-bookbox.php');
+	if('dt_book' == get_post_type(get_the_ID())) {
+		$file = locate_template(array('deadtree-bookbox.php'), true, false);
+		if(empty($file)) {
+			$deadtree = DeadTrees::get_dt();
+			require($deadtree->get_basedir() . '/template/deadtree-bookbox.php');
+		}
 	}
 }
 
