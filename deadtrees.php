@@ -882,6 +882,9 @@ class DeadTrees {
 		// set the default CSS setting
 		add_option('dt_send_bookbox_css', true);
 
+		// set the default setting for adding the bookbox.
+		add_option('dt_auto_add_bookbox', true);
+
 	}
 
 	public static function deactivate_action() {

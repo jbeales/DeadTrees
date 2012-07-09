@@ -32,6 +32,7 @@ Report issues at https://github.com/jbeales/DeadTrees/issues
 == Installation ==
 
 Either: 
+
 1. Go to Plugins > Add New in your WordPress admin.
 2. Install DeadTrees by johnnyb (this plugin)
 3. Activate the plugin through the 'Plugins' menu in WordPress
