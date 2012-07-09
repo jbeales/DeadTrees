@@ -54,6 +54,11 @@ OR:
 
 == Changelog ==
 
+= 1.0.2 = (in-progress list)
+* Fix issue where it was hard to turn off the auto-inclusion of the bookbox at the end of book entries, ([GitHub Issue #5](https://github.com/jbeales/DeadTrees/issues/5))
+* Improve formatting of Installation section of readme
+* Add debug functionality
+
 = 1.0.1 =
 * Updates plugin name, (one word only).
 * Fixes CSS URLs

@@ -39,6 +39,24 @@ class DeadTrees {
 
 	protected $default_affiliate_ids = array();
 
+	const debug = false;
+
+
+	protected function _maybe_log_item($item) {
+		if(self::debug) {
+
+			$debugfile = $this->basedir . '/debug.txt';
+
+			ob_start();
+			var_dump($item);
+			echo "\n\r\n\r";
+			debug_print_backtrace();
+			echo "\n\r===================\n\r";
+
+			$debugstr = ob_get_clean();
+			file_put_contents($debugfile, $debugstr, FILE_APPEND);
+		}
+	}
 
 
 	function __construct() {
@@ -140,8 +158,12 @@ class DeadTrees {
 			if($result_obj->Items && $result_obj->Items->Item->LargeImage) {
 				$image = $result_obj->Items->Item->LargeImage;
 				return $image->URL;
+			} else {
+				$this->_maybe_log_item($result_obj);
 			}
 
+		} else {
+			$this->_maybe_log_item($result);
 		}
 		return false;
 		
