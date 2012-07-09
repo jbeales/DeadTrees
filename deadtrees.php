@@ -39,7 +39,7 @@ class DeadTrees {
 
 	protected $default_affiliate_ids = array();
 
-	const debug = false;
+	const debug = true;
 
 
 	protected function _maybe_log_item($item) {

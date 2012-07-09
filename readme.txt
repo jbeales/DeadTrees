@@ -28,6 +28,8 @@ Development is on GitHub at https://github.com/jbeales/DeadTrees
 
 Report issues at https://github.com/jbeales/DeadTrees/issues
 
+See the public side in action, with some custom templating: http://johnbeales.com/books/
+
 
 == Installation ==
 
