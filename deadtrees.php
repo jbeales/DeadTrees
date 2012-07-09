@@ -505,7 +505,7 @@ class DeadTrees {
 	public function enqueue_metabox_styles() {
 		$current_screen = get_current_screen();
 		if('dt_book' == $current_screen->post_type) {
-			wp_enqueue_style('dt_bookbox_metabox', plugins_url('/deadtrees/admin/metaboxes.css'));
+			wp_enqueue_style('dt_bookbox_metabox', plugins_url('/dead-trees/admin/metaboxes.css'));
 		}
 	}
 
@@ -838,7 +838,7 @@ class DeadTrees {
 
 	public function enqueue_bookbox_styles() {
 
-		wp_enqueue_style('dt_bookbox_style', plugins_url('/deadtrees/style/deadtree-bookbox.css'));
+		wp_enqueue_style('dt_bookbox_style', plugins_url('/dead-trees/style/deadtree-bookbox.css'));
 		
 	}
 
