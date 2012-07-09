@@ -24,6 +24,10 @@ Hit publish and the Dead Trees grab the cover art from Amazon and publish your b
 
 You can also tag the book, just like a post. The pool of tags is shared between posts & books.
 
+Development is on GitHub at https://github.com/jbeales/DeadTrees
+
+Report issues at https://github.com/jbeales/DeadTrees/issues
+
 
 == Installation ==
 
