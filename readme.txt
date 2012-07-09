@@ -3,7 +3,7 @@ Contributors: johnnyb
 Tags: books, reading, library, book, 
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,25 +41,32 @@ OR:
 1. Upload the folder `deadtrees` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 
-THEN:
-
-1. Place `<?php dt_bookbox(); ?>` where you want book information to appear.
 
 
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1.png` (or jpg, jpeg, gif)
-2. This is the second screen shot
+1. The main Books page in the WordPress admin
+2. Editing a Book entry in the admin.
+3. Detail on the Book Info box in the admin.  Only one ASIN is required, but you can enter one for each Amazon site if you wish.
+4. This is the default affiliate link section in the Twenty Eleven theme.
 
 == Changelog ==
+
+= 1.0.1 =
+* Updates plugin name, (one word only).
+* Fixes CSS URLs
+* Adds screenshots to wordpress.org
+* Updates installation instructions
 
 = 1.0 =
 * Initial version of DeadTrees
 
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Fixed paths so that styles display properly. Updated plugin name.
 
 = 1.0 =
 Initial Version of DeadTrees
