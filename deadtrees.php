@@ -9,7 +9,7 @@
  */
 
 /**
- * Plugin Name: Dead Trees
+ * Plugin Name: DeadTrees
  * Plugin URI: http://johnbeales.com
  * Description: A Wordpress plugin to help avid readers share books that they enjoy.
  * Version: 1.0
