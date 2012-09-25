@@ -1,7 +1,7 @@
 <?php
 
 
-function dt_get_bookbox_item($item, $post_id = NULL) {
+function dt_get_bookbox_item($item, $post_id = 0) {
 	$deadtree = DeadTrees::get_dt();
 
 	$postmeta = $deadtree->get_bookbox_info($post_id);
@@ -34,6 +34,7 @@ function dt_get_bookbox_comment($post_id = 0) {
 
 function dt_get_bookbox_image($post_id = 0) {
 	$attachment_id = dt_get_bookbox_item('cover_image_attachment_id', $post_id);
+
 	if(!empty($attachment_id)) {
 		return wp_get_attachment_image($attachment_id, 'dt_book_cover_thumb');
 	}

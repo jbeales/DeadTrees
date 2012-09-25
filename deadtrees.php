@@ -151,6 +151,7 @@ class DeadTrees {
 
 		$result = wp_remote_request($url);
 
+
 		if(200 == $result['response']['code']) {
 
 			$result_obj = new SimpleXMLElement($result['body']);
@@ -648,7 +649,8 @@ class DeadTrees {
 
 	  					// we're assuming that this is a jpeg for now. Hopefully it is.
 	  					$filename = $filename['path'] . '/' . sprintf(__('book-%d-cover.jpg', 'deadtree'), $post_id);
-	  					file_put_contents($filename, $cover['body']);
+
+	  					$file_result = file_put_contents($filename, $cover['body']);
 
 	  					$wp_filetype = wp_check_filetype($filename, null );
 	  					$attachment = array(
@@ -751,12 +753,13 @@ class DeadTrees {
 		static $datacache = array();
 
 
-		if(is_null($post_id)) {
+		if(empty($post_id)) {
 			$post_id = get_the_ID();
 		}
 
 		$cachekey = 'P' . $post_id;
 
+		
 		// check for data in the cache, and return it if it's there.
 		if(isset($datacache[$cachekey])) {
 			return $datacache[$cachekey];
