@@ -4,7 +4,7 @@
 /**
  * @package Dead Trees: A Wordpress plugin to help avid readers share the books that they're enjoying
  * @author John Beales (http://johnbeales.com)
- * @version 1.0.2
+ * @version 1.0.3
  * 
  */
 
@@ -12,7 +12,7 @@
  * Plugin Name: DeadTrees
  * Plugin URI: http://johnbeales.com
  * Description: A Wordpress plugin to help avid readers share books that they enjoy.
- * Version: 1.0.1
+ * Version: 1.0.3
  * Author: John Beales
  * Author URI: http://johnbeales.com
  */
