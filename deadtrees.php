@@ -4,7 +4,7 @@
 /**
  * @package Dead Trees: A Wordpress plugin to help avid readers share the books that they're enjoying
  * @author John Beales (http://johnbeales.com)
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -39,7 +39,7 @@ class DeadTrees {
 
 	protected $default_affiliate_ids = array();
 
-	const debug = true;
+	const debug = false;
 
 
 	protected function _maybe_log_item($item) {

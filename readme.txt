@@ -2,8 +2,8 @@
 Contributors: johnnyb
 Tags: books, reading, library, book, 
 Requires at least: 3.0
-Tested up to: 3.4.1
-Stable tag: 1.0.1
+Tested up to: 3.4.2
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,7 @@ OR:
 == Changelog ==
 
 = 1.0.2 = (in-progress list)
+* Fix issue where the same cover image would be shown for all books at wpurl/books/, ([GitHub Issue #10](https://github.com/jbeales/DeadTrees/issues/10))
 * Fix issue where it was hard to turn off the auto-inclusion of the bookbox at the end of book entries, ([GitHub Issue #5](https://github.com/jbeales/DeadTrees/issues/5))
 * Improve formatting of Installation section of readme
 * Add debug functionality
