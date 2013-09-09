@@ -2,8 +2,8 @@
 Contributors: johnnyb
 Tags: books, reading, library, book, 
 Requires at least: 3.0
-Tested up to: 3.4.2
-Stable tag: 1.0.3
+Tested up to: 3.6
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,6 +45,8 @@ OR:
 2. Activate the plugin through the 'Plugins' menu in WordPress
 
 
+== Troubleshooting ==
+If you get a 404 error when trying to view your first book post, visit the Permalinks page in the admin, (Settings > Permalinks), and please leave a comment on [Github issue #13](https://github.com/jbeales/DeadTrees/issues/13) or post in the support forums on wordpress.org to let me know that the problem isn't fixed yet.
 
 
 == Screenshots ==
@@ -55,6 +57,10 @@ OR:
 4. This is the default affiliate link section in the Twenty Eleven theme.
 
 == Changelog ==
+
+= 1.0.4 =
+* Fix bug where "Display Books On" setting didn't save properly, (this makes it so that books can be displayed in archives and on the main posts page).
+* Fix a typo.
 
 = 1.0.3 =
 * Fix readme and plugin header file problems with 1.0.2 deployment.

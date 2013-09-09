@@ -12,7 +12,7 @@
  * Plugin Name: DeadTrees
  * Plugin URI: http://johnbeales.com
  * Description: A Wordpress plugin to help avid readers share books that they enjoy.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: John Beales
  * Author URI: http://johnbeales.com
  */
@@ -310,7 +310,7 @@ class DeadTrees {
 
 	public function validate_setting_include_books($input) {
 		
-		if(in_array($input, $this->allowable_display_locations)) {
+		if(in_array($input, array_keys($this->allowable_display_locations))) {
 			return $input;
 		}
 
@@ -339,7 +339,6 @@ class DeadTrees {
 		}
 
 		echo '</select>';
-
 	}
 
 	public function validate_setting_checkbox($input) {
@@ -355,7 +354,7 @@ class DeadTrees {
 		echo '<p>';
 		_e('We can automatically include Amazon links to the books you read without you having to change your templates. To do this, and have them look best, check both boxes.');
 		echo '</p><p>';
-		_e('If you want to include only the actual links, or only the styles for the links, selet only the first box, or the second box, respectively.', 'deadtree');
+		_e('If you want to include only the actual links, or only the styles for the links, select only the first box, or the second box, respectively.', 'deadtree');
 		echo '</p>';
 	}
 
@@ -896,8 +895,7 @@ class DeadTrees {
 
 
 	public static function activate_action() {
-		flush_rewrite_rules();
-
+		
 		// set the default cover size.
 		add_option('dt_default_cover_size', array('width' => 75, 'height' => 75));
 
@@ -909,6 +907,8 @@ class DeadTrees {
 
 		// set the default setting for adding the bookbox.
 		add_option('dt_auto_add_bookbox', true);
+
+		flush_rewrite_rules();
 
 	}
 

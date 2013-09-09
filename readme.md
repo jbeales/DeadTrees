@@ -13,7 +13,7 @@ Hit publish and the Dead Trees grab the cover art from Amazon and publish your b
 You can also tag the book, just like a post. The pool of tags is shared between posts & books.
 
 ## Installation
-Install Dead Trees like a normal Wordpress plugin. It'll work out of the box, but it'll work better if you set up a couple of extra things:
+Install Dead Trees like a normal Wordpress plugin. It should work out of the box, but it'll work better if you set up a couple of extra things:
 
 ### Amazon Affiliate IDs
 Currently Dead Trees can auto-generate affiliate links to Amazon.com, Amazon.ca, and Amazon.co.uk so that your readers can purchase books that you recommend, and you can receive a commission on sales from Amazon. Sign up for an affiliate ID at http://affiliate-program.amazon.com, (or .ca, or .co.uk, or all 3). Once you've got your affiliate IDs enter them in Settings > Dead Trees in your Wordpress admin.
@@ -44,8 +44,10 @@ Gets an extra comment to display in the bookbox. You enter this in the admin in 
 ## Template Files
 Dead Trees introduces a new post type: dt_book, and a new taxonomy: dt_writer. This means that you can put a file into your theme called type-dt_book.php and it'll be used in place of single.php, and you can add taxonomy-dt_writer.php and it'll be used in place of tag.php. This way you can make your reading list look like a real library!
 
-
 ## On Caching Plugins
 If you use WP Super Cache, you'll need to clear your cache, or turn off caching, when updating the design of the bookbox, (updating deadtree-bookbox.php), and when updating your Amazon Affiliate IDs. Once your changes are made just make sure the cache is clear and turn caching back on.
 
 I'm not sure about other caching plugins, but I suspect they'll behave in a similar manner.
+
+## Troubleshooting
+If you get a 404 error when trying to view your first book post, visit the Permalinks page in the admin, (Settings > Permalinks), and please leave a comment on [Github issue #13](https://github.com/jbeales/DeadTrees/issues/13) or post in the support forums on wordpress.org to let me know that the problem isn't fixed yet.
