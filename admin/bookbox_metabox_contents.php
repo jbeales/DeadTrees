@@ -21,7 +21,7 @@
 	<label for="dt_bookbox_asin_ca"><?php _e('Amazon Canada ASIN:', 'deadtree'); ?></label>
 	<input type="text" name="dt_bookbox_asin_amazon.ca" id="dt_bookbox_asin_amazon.ca" value="<?php echo esc_attr($rawdata['asin_amazon.ca']); ?>" />
 	<span class="howto"><?php
-	echo sprintf( __('The %s to use when sending readers Amazon.ca, if you want it to be different from Amazon.com'), $asin_html);
+	echo sprintf( __('The %s to use when sending readers Amazon.ca, if you want it to be different from Amazon.com', 'deadtree' ), $asin_html);
 	?></span>
 </p>
 
@@ -29,7 +29,7 @@
 	<label for="dt_bookbox_asin_uk"><?php _e('Amazon UK ASIN:', 'deadtree'); ?></label>
 	<input type="text" name="dt_bookbox_asin_amazon.co.uk" id="dt_bookbox_asin_amazon.co.uk" value="<?php echo esc_attr($rawdata['asin_amazon.co.uk']); ?>" />
 	<span class="howto"><?php
-	echo sprintf( __('The %s to use when sending readers Amazon.co, if you want it to be different from Amazon.com'), $asin_html);
+	echo sprintf( __('The %s to use when sending readers Amazon.co, if you want it to be different from Amazon.com', 'deadtree'), $asin_html);
 	?></span>
 </p>
 
