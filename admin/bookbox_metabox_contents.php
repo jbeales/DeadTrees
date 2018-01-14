@@ -41,6 +41,6 @@
 </p>
 
 <?php if(isset($rawdata['cover_image_attachment_id'])): ?>
-<p><?php echo wp_get_attachment_image($rawdata['cover_image_attachment_id'], 'dt_book_cover_thumb'); ?></p>
+<p><?php _e( 'Cover: ', 'deadtree' ); ?><br><?php echo wp_get_attachment_image($rawdata['cover_image_attachment_id'], 'dt_book_cover_thumb'); ?></p>
 
 <?php endif; ?>
