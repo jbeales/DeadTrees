@@ -486,6 +486,7 @@ class DeadTrees {
 			'show_ui' => true,
 			'show_in_nav_menus' => true,
 			'menu_position' => 5,
+			'menu_icon' => 'dashicons-book-alt',
 			'heirarchical' => false,
 			'supports' => array(
 				'title',
