@@ -1,3 +1,9 @@
-#dt_bookbox_info input[type="text"] {
+#dt_bookbox_info input[type="text"],
+#dt_bookbox_info textarea {
 	width:99%;
+}
+
+#dt_bookbox_info .attachment-dt_book_cover_thumb {
+	max-width: 99%;
+	height:auto;
 }
