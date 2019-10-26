@@ -601,7 +601,7 @@ class DeadTrees {
 
 
       	// check nonce
-      	if ( !wp_verify_nonce( $_POST['dt_bookbox_nonce'], 'deadtree' ) ) {
+      	if ( !isset($_POST['dt_bookbox_nonce']) || !wp_verify_nonce( $_POST['dt_bookbox_nonce'], 'deadtree' ) ) {
     		return;
   		}
 
