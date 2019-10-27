@@ -8,6 +8,11 @@
 ?>
 <p><?php _e('Info about this book used to display links to Amazon where your readers can buy the book.', 'deadtree'); ?></p>
 
+<p>
+	<label for="dt_bookbox_isbn"><?php _e('ISBN:', 'deadtree'); ?></label>
+	<input type="text" name="dt_bookbox_isbn" id="dt_bookbox_isbn" value="<?php echo esc_attr($rawdata['isbn']); ?>" />
+	<span class="howto"><abbr title="<?php _e('International Standard Book Number', 'deadtree'); ?>"><?php _e('ISBN', 'deadtree'); ?></abbr> <?php _e('(ISBN-10 or ISBN-13)', 'deadtree'); ?></span>
+</p>
 
 
 <p>

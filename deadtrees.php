@@ -39,7 +39,7 @@ class DeadTrees {
 
 	protected $default_affiliate_ids = array();
 
-	const debug = false;
+	const debug = true;
 
 
 	protected function _maybe_log_item($item) {
@@ -48,7 +48,7 @@ class DeadTrees {
 			$debugfile = $this->basedir . '/debug.txt';
 
 			ob_start();
-			var_dump($item);
+			print_r($item);
 			echo "\n\r\n\r";
 			debug_print_backtrace();
 			echo "\n\r===================\n\r";
@@ -607,6 +607,7 @@ class DeadTrees {
 
   		// make sure the current user can edit this post
   		if(current_user_can( 'edit_post', $post_id) ) {
+  			$isbn = trim( $_POST['dt_bookbox_isbn'] );
   			$asin_amazon_com = trim($_POST['dt_bookbox_asin_amazon_com']);
   			$asin_amazon_ca = trim($_POST['dt_bookbox_asin_amazon_ca']);
   			$asin_amazon_co_uk = trim($_POST['dt_bookbox_asin_amazon_co_uk']);
@@ -621,6 +622,7 @@ class DeadTrees {
   			}
 
 
+  			update_post_meta($post_id, '_dt_isbn', $isbn );
   			update_post_meta($post_id, '_dt_asin_amazon.com', $asin_amazon_com);
   			update_post_meta($post_id, '_dt_asin_amazon.ca', $asin_amazon_ca);
   			update_post_meta($post_id, '_dt_asin_amazon.co.uk', $asin_amazon_co_uk);
@@ -684,7 +686,7 @@ class DeadTrees {
 	public function get_raw_bookbox_info($post_id = NULL) {
 
 		// set up a cache to avoid unneeded DB lookups.
-		static $datacache = array();
+		static $datacache = [];
 
 
 		if(is_null($post_id)) {
@@ -698,18 +700,20 @@ class DeadTrees {
 			return $datacache[$cachekey];
 		} else {
 
+			$isbn = get_post_meta( $post_id, '_dt_isbn', true );
 			$asin = get_post_meta($post_id, '_dt_asin_amazon.com', true);
 			$asin_ca = get_post_meta($post_id, '_dt_asin_amazon.ca', true);
 			$asin_uk = get_post_meta($post_id, '_dt_asin_amazon.co.uk', true);
 
 			$comment = get_post_meta($post_id, '_dt_bookbox_comment', true);
 
-			$retdata = array(
+			$retdata = [
+				'isbn' => $isbn,
 				'asin_amazon.com' => $asin,
 				'asin_amazon.ca' => $asin_ca,
 				'asin_amazon.co.uk' => $asin_uk,
 				'comment' => $comment
-			);
+			];
 
 			$cover_id = $this->_get_cover_attachment_id($post_id);
 			if(!empty($cover_id)) {
