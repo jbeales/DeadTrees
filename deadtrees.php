@@ -4,7 +4,7 @@
 /**
  * @package Dead Trees: A Wordpress plugin to help avid readers share the books that they're enjoying
  * @author John Beales (http://johnbeales.com)
- * @version 1.0.3
+ * @version 1.1
  * 
  */
 
@@ -12,7 +12,7 @@
  * Plugin Name: DeadTrees
  * Plugin URI: http://johnbeales.com
  * Description: A Wordpress plugin to help avid readers share books that they enjoy.
- * Version: 1.0.4
+ * Version: 1.1
  * Author: John Beales
  * Author URI: http://johnbeales.com
  */
@@ -36,6 +36,8 @@ class DeadTrees {
 	}
 
 	protected $allowable_display_locations;
+
+	protected $cover_sources;
 
 	protected $default_affiliate_ids = array();
 
@@ -68,6 +70,11 @@ class DeadTrees {
 			'tag' => __('Book section and tag archives', 'deadtree'),
 			'tag|home' => __('Book section, tag and date archive pages', 'deadtree')
 		);
+
+		$this->cover_sources = [
+			'openlibrary' => __('Open Library', 'deadtree'),
+			'amazon' => __('Amazon', 'deadtree')
+		];
 
 		if(get_option('dt_default_to_dev_affiliate', true)) {
 			$this->default_affiliate_ids = array(
@@ -223,6 +230,10 @@ class DeadTrees {
 		echo '<p>' . __('Set the default size to display book covers at, (covers will not be cropped in this size).', 'deadtree') . '</p>'; 
 	}
 
+	public function cover_source_settings_section_text() {
+		echo '<p>' . __('Choose to check OpenLibrary or Amazon first for cover art. If no cover art is found at the first source the second will be checked if possible.') . '<p>';
+	}
+
 
 	public function populate_cover_size_settings_field($dimension) {
 		
@@ -251,6 +262,30 @@ class DeadTrees {
 		}
 
 		return $dimensions;
+	}
+
+	public function populate_default_cover_source_field($args) {
+		
+		$opt = get_option('dt_default_cover_source');
+
+		echo '<select name="dt_default_cover_source" id="dt_default_cover_source">';
+		foreach($this->cover_sources as $key => $description) {
+			if($opt == $key) {
+				$selector = ' selected="selected"';
+			} else {
+				$selector = '';
+			}
+
+			echo '<option value="' . esc_attr($key) . '"' . $selector . '>' . esc_html($description) . '</option>';
+		}
+
+		echo '</select>';
+	}
+
+	public function validate_default_cover_source($input) {
+		if(in_array($input, array_keys($this->cover_sources))) {
+			return $input;
+		}
 	}
 
 	public function validate_amazon_api_creds($input) {
@@ -394,6 +429,11 @@ class DeadTrees {
 		add_settings_section('dt_default_cover_sizes', __('Default Book Cover Image Size', 'deadtree'), array(&$this, 'cover_size_settings_section_text'), 'deadtree');
 		add_settings_field('dt_cover_width', __('Width:', 'deadtree'), array(&$this, 'populate_cover_size_settings_field'), 'deadtree', 'dt_default_cover_sizes', 'width');
 		add_settings_field('dt_cover_height', __('Height:', 'deadtree'), array(&$this, 'populate_cover_size_settings_field'), 'deadtree', 'dt_default_cover_sizes', 'height');
+
+		register_setting('deadtree_options', 'dt_default_cover_source', [&$this, 'validate_default_cover_source']);
+		
+		add_settings_section('dt_default_cover_source', __('Preferred Cover Source', 'deadtree'), [&$this, 'cover_source_settings_section_text'], 'deadtree');
+		add_settings_field('dt_default_cover_source', __('Preferred Cover Source:', 'deadtree'), [&$this, 'populate_default_cover_source_field'], 'deadtree', 'dt_default_cover_source');
 
 		register_setting('deadtree_options', 'dt_amazon_api_creds', array(&$this, 'validate_amazon_api_creds'));
 		add_settings_section('dt_amazon_api_creds', __('Amazon API Credentials', 'deadtree'), array(&$this, 'amazon_api_creds_section_text'), 'deadtree');
