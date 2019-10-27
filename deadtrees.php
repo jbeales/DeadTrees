@@ -643,8 +643,6 @@ class DeadTrees {
 
   				if($coverurl) {
 
-
-
   					$cover = wp_remote_get($coverurl);
   					if(!is_wp_error( $cover )) {
 	  					$filename = wp_upload_dir();
@@ -669,17 +667,10 @@ class DeadTrees {
 						if($cover_post_id) {
 							$this->_set_cover_attachment_id($cover_post_id, $post_id);
 						}
-
 					}
-
   				}
-
-
   			}
-
   		}
-
-
 	}
 
 
@@ -700,19 +691,12 @@ class DeadTrees {
 			return $datacache[$cachekey];
 		} else {
 
-			$isbn = get_post_meta( $post_id, '_dt_isbn', true );
-			$asin = get_post_meta($post_id, '_dt_asin_amazon.com', true);
-			$asin_ca = get_post_meta($post_id, '_dt_asin_amazon.ca', true);
-			$asin_uk = get_post_meta($post_id, '_dt_asin_amazon.co.uk', true);
-
-			$comment = get_post_meta($post_id, '_dt_bookbox_comment', true);
-
 			$retdata = [
-				'isbn' => $isbn,
-				'asin_amazon.com' => $asin,
-				'asin_amazon.ca' => $asin_ca,
-				'asin_amazon.co.uk' => $asin_uk,
-				'comment' => $comment
+				'isbn' => get_post_meta( $post_id, '_dt_isbn', true ),
+				'asin_amazon.com' => get_post_meta($post_id, '_dt_asin_amazon.com', true),
+				'asin_amazon.ca' => get_post_meta($post_id, '_dt_asin_amazon.ca', true),
+				'asin_amazon.co.uk' => get_post_meta($post_id, '_dt_asin_amazon.co.uk', true),
+				'comment' => get_post_meta($post_id, '_dt_bookbox_comment', true)
 			];
 
 			$cover_id = $this->_get_cover_attachment_id($post_id);
@@ -754,7 +738,7 @@ class DeadTrees {
 	public function get_bookbox_info($post_id = NULL ) {
 
 		// set up a cache to avoid unneeded DB lookups.
-		static $datacache = array();
+		static $datacache = [];
 
 
 		if(empty($post_id)) {
@@ -771,7 +755,15 @@ class DeadTrees {
 
 			$rawdata = $this->get_raw_bookbox_info($post_id);
 
+			$isbn = $rawdata['isbn'];
+			
+
+			// ISBN & ASIN are usually the same. If there's no ASIN, use ISBN.
 			$asin_amazon_com = $rawdata['asin_amazon.com'];
+			if(empty($asin_amazon_com)) {
+				$asin_amazon_com = $isbn;
+			}
+			
 
 			$asin_amazon_ca = $rawdata['asin_amazon.ca'];
 			if(empty($asin_amazon_ca)) {
@@ -785,12 +777,13 @@ class DeadTrees {
 
 			$comment = $rawdata['comment'];
 
-			$retdata = array(
+			$retdata = [
+				'isbn' => $isbn,
 				'asin_amazon.com' => $asin_amazon_com,
 				'asin_amazon.ca' => $asin_amazon_ca,
 				'asin_amazon.co.uk' => $asin_amazon_co_uk,
 				'comment' => $comment
-			);
+			];
 
 			if(isset($rawdata['cover_image_attachment_id'])) {
 				$retdata['cover_image_attachment_id'] = $rawdata['cover_image_attachment_id'];
@@ -934,5 +927,3 @@ register_deactivation_hook(__FILE__, array('DeadTrees', 'deactivate_action'));
 
 require_once( dirname(__FILE__) . '/template_tags.php');
 
-
-?>
