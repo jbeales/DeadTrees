@@ -720,8 +720,7 @@ class DeadTrees {
 
 		$coverurl = '';
 		foreach($sources as $source => $sourcename) {
-
-			echo "$source<br>";
+			
 			if( 'amazon' === $source ) {
 				$coverurl = $this->_get_amazon_cover_url($book_info['asin_amazon.com']);
 			} else if( 'openlibrary' === $source ) {
