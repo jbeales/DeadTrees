@@ -18,6 +18,12 @@ It's slightly influenced by other "My Library" type of plugins, such as the whol
 
 I wrote DeadTrees because I wanted to be able to post to my blog when I read a book, but I didn't want to be required to actually write a post about the book if I didn't want to.
 
+== New in Version 1.1: Book Covers from OpenLibrary.org ==
+
+In version 1.1 book covers will be fetched from OpenLibrary.org or Amazon, depending on which you have selected as your preferred source, and if you have set your Amazon API credentials. If you choose OpenLibrary.org as your preferred source the plugin will attempt to get a book cover from Open Library, and fall back to Amazon if Open Library doesn't have the cover. The opposite happens, (Amazon first, fall back to Open Library), if Amazon is set as your preferred source.
+
+OpenLibrary.org does not require any API crededials, so cover art should work without any special configuration.
+
 ## How it works
 To post a book that you read, you'll go to the admin of your site and choose "Books" from the main menu. You can then enter the title of the book, the author's name(s), ISBN, Amazon's ASIN, (likely the ISBN), and, if you wish, you may write about the book, but you don't have to if you don't want to. 
 
