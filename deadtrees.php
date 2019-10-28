@@ -720,7 +720,7 @@ class DeadTrees {
 
 		$coverurl = '';
 		foreach($sources as $source => $sourcename) {
-			
+
 			if( 'amazon' === $source ) {
 				$coverurl = $this->_get_amazon_cover_url($book_info['asin_amazon.com']);
 			} else if( 'openlibrary' === $source ) {
@@ -736,7 +736,8 @@ class DeadTrees {
 		if(!empty($coverurl)) {
 
 			$cover = wp_remote_get($coverurl);
-			if(!is_wp_error( $cover )) {
+
+			if(!is_wp_error( $cover ) && $cover['http_response']->get_status() != 404) {
 				$filename = wp_upload_dir();
 
 				// we're assuming that this is a jpeg for now. Hopefully it is.
