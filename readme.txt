@@ -19,9 +19,9 @@ It's slightly influenced by other "My Library" type of plugins, such as the whol
 I wrote DeadTrees because I wanted to be able to post to my blog when I read a book, but I didn't want to be required to actually write a post about the book if I didn't want to.
 
 ## How it works
-To post a book that you read, you'll go to the admin of your site and choose "Books" from the main menu. You can then enter the title of the book, the author's name(s), Amazon's ASIN, (likely the ISBN), and, if you wish, you may write about the book, but you don't have to if you don't want to. 
+To post a book that you read, you'll go to the admin of your site and choose "Books" from the main menu. You can then enter the title of the book, the author's name(s), ISBN, Amazon's ASIN, (likely the ISBN), and, if you wish, you may write about the book, but you don't have to if you don't want to. 
 
-Hit publish and the DeadTrees grab the cover art from Amazon and publish your book.
+Hit publish and the DeadTrees will grab the cover art from Open Library or Amazon and publish your book.
 
 You can also tag the book, just like a post. The pool of tags is shared between posts & books.
 
@@ -58,6 +58,9 @@ If you get a 404 error when trying to view your first book post, visit the Perma
 4. This is the default affiliate link section in the Twenty Eleven theme.
 
 == Changelog ==
+
+= 1.1 =
+* Add [Open Library](https://openlibrary.org/) as a source of book covers.
 
 = 1.0.4 =
 * Fix bug where "Display Books On" setting didn't save properly, (this makes it so that books can be displayed in archives and on the main posts page).
