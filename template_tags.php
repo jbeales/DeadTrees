@@ -15,6 +15,9 @@ function dt_get_bookbox_item($item, $post_id = 0) {
 }
 
 
+function dt_get_isbn($post_id = 0) {
+	return dt_get_bookbox_item('isbn', $post_id);
+}
 
 function dt_get_asin_com($post_id = 0) {
 	return dt_get_bookbox_item('asin_amazon.com', $post_id);

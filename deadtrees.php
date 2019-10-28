@@ -117,7 +117,7 @@ class DeadTrees {
 	}
 
 
-	protected function _get_image_url($asin) {
+	protected function _get_amazon_cover_url($asin) {
 
 		//  gmdate('Y-m-d\TH:i:s\Z', time());
 
@@ -175,6 +175,17 @@ class DeadTrees {
 		}
 		return false;
 		
+	}
+
+	protected function _get_openlibrary_cover_url($isbn) {
+
+		$url = '';
+		if(!empty($isbn)) {
+			$url = "http://covers.openlibrary.org/b/isbn/$isbn-L.jpg?default=false";
+		}
+
+		return $url;
+
 	}
 
 
@@ -265,7 +276,7 @@ class DeadTrees {
 	}
 
 	public function populate_default_cover_source_field($args) {
-		
+
 		$opt = get_option('dt_default_cover_source');
 
 		echo '<select name="dt_default_cover_source" id="dt_default_cover_source">';
@@ -656,9 +667,15 @@ class DeadTrees {
 
 
   			$asin_changed = false;
-  			$old_asin_amazon_com = dt_get_asin_com();
+  			$old_asin_amazon_com = dt_get_asin_com($post_id);
   			if($old_asin_amazon_com != $asin_amazon_com) {
   				$asin_changed = true;
+  			}
+
+  			$isbn_changed = false;
+  			$old_isbn = dt_get_isbn($post_id);
+  			if($old_isbn != $isbn) {
+  				$isbn_changed = true;
   			}
 
 
@@ -672,49 +689,84 @@ class DeadTrees {
   			$cover_id = $this->_get_cover_attachment_id($post_id);
 
 
+  			$fetch_new_cover = false;
   			// delete the old cover;
-  			if($asin_changed) {
+  			if( ( !empty($old_asin) && $asin_changed ) || ( !empty($old_isbn) && $isbn_changed ) ) {
   				$this->_delete_current_cover($post_id);
   			}
 
-  			if(($asin_changed || empty($cover_id) || false === wp_get_attachment_url($cover_id))  && !empty($asin_amazon_com)) {
-  				$coverurl = $this->_get_image_url($asin_amazon_com);
-
-
-  				if($coverurl) {
-
-  					$cover = wp_remote_get($coverurl);
-  					if(!is_wp_error( $cover )) {
-	  					$filename = wp_upload_dir();
-
-	  					// we're assuming that this is a jpeg for now. Hopefully it is.
-	  					$filename = $filename['path'] . '/' . sprintf(__('book-%d-cover.jpg', 'deadtree'), $post_id);
-
-	  					$file_result = file_put_contents($filename, $cover['body']);
-
-	  					$wp_filetype = wp_check_filetype($filename, null );
-	  					$attachment = array(
-							'post_mime_type' => $wp_filetype['type'],
-							'post_title' => sprintf(__('%s Cover', 'deadtree'), get_the_title($post_id)),
-							'post_content' => '',
-							'post_status' => 'inherit'
-						);
-
-						$cover_post_id = wp_insert_attachment($attachment, $filename, $post_id);
-						$attach_data = wp_generate_attachment_metadata($cover_post_id, $filename);
-  						wp_update_attachment_metadata($cover_post_id,  $attach_data);
-
-						if($cover_post_id) {
-							$this->_set_cover_attachment_id($cover_post_id, $post_id);
-						}
-					}
-  				}
+  			if($fetch_new_cover || empty($cover_id) || false === wp_get_attachment_url($cover_id)) {
+  				$this->update_cover($post_id);
   			}
   		}
 	}
 
+	protected function update_cover($post_id) {
 
-	public function get_raw_bookbox_info($post_id = NULL) {
+
+		$preferred = get_option('dt_default_cover_source');
+		$book_info = $this->get_bookbox_info($post_id, true);
+
+		
+
+		$sources = $this->cover_sources;
+		uksort($sources, function($elm) use ($preferred) {
+			if( $preferred == $elm )  {
+				return -1;
+			}
+
+			return 1;
+		});
+
+		$coverurl = '';
+		foreach($sources as $source => $sourcename) {
+
+			echo "$source<br>";
+			if( 'amazon' === $source ) {
+				$coverurl = $this->_get_amazon_cover_url($book_info['asin_amazon.com']);
+			} else if( 'openlibrary' === $source ) {
+				$coverurl = $this->_get_openlibrary_cover_url($book_info['isbn']);
+			}
+
+			if(!empty($coverurl)) {
+				break;
+			}
+		}
+
+
+		if(!empty($coverurl)) {
+
+			$cover = wp_remote_get($coverurl);
+			if(!is_wp_error( $cover )) {
+				$filename = wp_upload_dir();
+
+				// we're assuming that this is a jpeg for now. Hopefully it is.
+				$filename = $filename['path'] . '/' . sprintf(__('book-%d-cover.jpg', 'deadtree'), $post_id);
+
+				$file_result = file_put_contents($filename, $cover['body']);
+
+				$wp_filetype = wp_check_filetype($filename, null );
+				$attachment = [
+					'post_mime_type' => $wp_filetype['type'],
+					'post_title' => sprintf(__('%s Cover', 'deadtree'), get_the_title($post_id)),
+					'post_content' => '',
+					'post_status' => 'inherit'
+				];
+
+				$cover_post_id = wp_insert_attachment($attachment, $filename, $post_id);
+				$attach_data = wp_generate_attachment_metadata($cover_post_id, $filename);
+					wp_update_attachment_metadata($cover_post_id,  $attach_data);
+
+				if($cover_post_id) {
+					$this->_set_cover_attachment_id($cover_post_id, $post_id);
+					update_post_meta($post_id, '_dt_cover_source', $source );
+				}
+			}
+		}
+	}
+
+
+	public function get_raw_bookbox_info($post_id = NULL, $force_fresh = false) {
 
 		// set up a cache to avoid unneeded DB lookups.
 		static $datacache = [];
@@ -727,7 +779,7 @@ class DeadTrees {
 		$cachekey = 'P' . $post_id;
 
 		// check for data in the cache, and return it if it's there.
-		if(isset($datacache[$cachekey])) {
+		if(isset($datacache[$cachekey]) && !$force_fresh) {
 			return $datacache[$cachekey];
 		} else {
 
@@ -775,7 +827,7 @@ class DeadTrees {
 
 
 
-	public function get_bookbox_info($post_id = NULL ) {
+	public function get_bookbox_info($post_id = NULL, $force_fresh = false ) {
 
 		// set up a cache to avoid unneeded DB lookups.
 		static $datacache = [];
@@ -789,11 +841,11 @@ class DeadTrees {
 
 		
 		// check for data in the cache, and return it if it's there.
-		if(isset($datacache[$cachekey])) {
+		if(isset($datacache[$cachekey]) && !$force_fresh) {
 			return $datacache[$cachekey];
 		} else {
 
-			$rawdata = $this->get_raw_bookbox_info($post_id);
+			$rawdata = $this->get_raw_bookbox_info($post_id, $force_fresh);
 
 			$isbn = $rawdata['isbn'];
 			
