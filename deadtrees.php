@@ -242,7 +242,7 @@ class DeadTrees {
 	}
 
 	public function cover_source_settings_section_text() {
-		echo '<p>' . __('Choose to check OpenLibrary or Amazon first for cover art. If no cover art is found at the first source the second will be checked if possible.') . '<p>';
+		echo '<p>' . __('If you prefer Amazon\'s cover art, and have access to the API, check this box to try getting cover art from Amazon before any other source. Otherwise, uncheck this box and OpenLibrary or Librarything will be tried first.') . '<p>';
 	}
 
 
@@ -275,29 +275,31 @@ class DeadTrees {
 		return $dimensions;
 	}
 
-	public function populate_default_cover_source_field($args) {
+	public function populate_default_cover_source_field( $args ) {
 
-		$opt = get_option('dt_default_cover_source');
+		$old_opt = get_option( 'dt_default_cover_source' );
+		$opt = get_option( 'dt_amazon_as_first_cover_source' );
 
-		echo '<select name="dt_default_cover_source" id="dt_default_cover_source">';
-		foreach($this->cover_sources as $key => $description) {
-			if($opt == $key) {
-				$selector = ' selected="selected"';
-			} else {
-				$selector = '';
+		if(!is_bool($opt)) {
+			if($old_opt == 'amazon') {
+				$opt = true;
 			}
-
-			echo '<option value="' . esc_attr($key) . '"' . $selector . '>' . esc_html($description) . '</option>';
 		}
+
+		if($opt) {
+			$selector = ' checked';
+		} else {
+			$selector = '';
+		}
+
+
+		echo '<label for="dt_amazon_as_first_cover_soruce"><input type="checkbox"
+			name="dt_amazon_as_first_cover_source" id="dt_amazon_as_first_cover_source" 
+			value="yes"'. $selector . '>' . __('Try to get cover art from Amazon first', 'deadtree' ) . '</label>';
 
 		echo '</select>';
 	}
 
-	public function validate_default_cover_source($input) {
-		if(in_array($input, array_keys($this->cover_sources))) {
-			return $input;
-		}
-	}
 
 	public function validate_amazon_api_creds($input) {
 		$creds = array();
@@ -330,13 +332,6 @@ class DeadTrees {
 
 		echo '<input type="text" name="dt_amazon_api_creds[' . esc_attr($field) .']" value="' . esc_attr($credential) .'" />';
 
-	}
-
-	public function validate_default_to_dev_affiliate($input) {
-		if('yes' == $input) {
-			return true;
-		}
-		return false;
 	}
 
 	public function default_to_dev_affiliate_setting_explanation() {
@@ -441,10 +436,10 @@ class DeadTrees {
 		add_settings_field('dt_cover_width', __('Width:', 'deadtree'), array(&$this, 'populate_cover_size_settings_field'), 'deadtree', 'dt_default_cover_sizes', 'width');
 		add_settings_field('dt_cover_height', __('Height:', 'deadtree'), array(&$this, 'populate_cover_size_settings_field'), 'deadtree', 'dt_default_cover_sizes', 'height');
 
-		register_setting('deadtree_options', 'dt_default_cover_source', [&$this, 'validate_default_cover_source']);
+		register_setting('deadtree_options', 'dt_default_cover_source', [&$this, 'validate_setting_checkbox']);
 		
-		add_settings_section('dt_default_cover_source', __('Preferred Cover Source', 'deadtree'), [&$this, 'cover_source_settings_section_text'], 'deadtree');
-		add_settings_field('dt_default_cover_source', __('Preferred Cover Source:', 'deadtree'), [&$this, 'populate_default_cover_source_field'], 'deadtree', 'dt_default_cover_source');
+		add_settings_section('dt_default_cover_source', __('Preferred Cover Art Source', 'deadtree'), [&$this, 'cover_source_settings_section_text'], 'deadtree');
+		add_settings_field('dt_default_cover_source', __('Try Amazon First?', 'deadtree'), [&$this, 'populate_default_cover_source_field'], 'deadtree', 'dt_default_cover_source');
 
 		register_setting('deadtree_options', 'dt_amazon_api_creds', array(&$this, 'validate_amazon_api_creds'));
 		add_settings_section('dt_amazon_api_creds', __('Amazon API Credentials', 'deadtree'), array(&$this, 'amazon_api_creds_section_text'), 'deadtree');
@@ -455,7 +450,7 @@ class DeadTrees {
 		add_settings_section('dt_include_books', __('Where should we show books on your site?', 'deadtree'), array(&$this, 'setting_include_books_section_text'), 'deadtree');
 		add_settings_field('dt_include_books_location', __('Display books on:', 'deadtree'), array(&$this, 'populate_include_books_field'), 'deadtree', 'dt_include_books');
 
-		register_setting('deadtree_options', 'dt_default_to_dev_affiliate', array(&$this, 'validate_default_to_dev_affiliate'));
+		register_setting('deadtree_options', 'dt_default_to_dev_affiliate', array(&$this, 'validate_setting_checkbox'));
 		add_settings_section('dt_default_to_dev_affiliate', __('Default to the Developer\'s Amazon Affiliate ID', 'deadtree'), array(&$this, 'default_to_dev_affiliate_setting_explanation'), 'deadtree');
 		add_settings_field('dt_default_to_dev_affiliate', __('Check to use the developer\'s Amazon Affiliate ID if no other ID is available', 'deadtree'), array(&$this, 'populate_default_to_dev_affiliate'), 'deadtree', 'dt_default_to_dev_affiliate');
 
