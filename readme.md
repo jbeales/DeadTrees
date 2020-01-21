@@ -3,13 +3,17 @@ Dead Trees is a Wordpress plugin that allows you to share the books you've been 
 
 It's slightly influenced by other "My Library" type of plugins, such as the whole Now Reading/Reloaded/Redux group of plugins, but is a complete re-write using Wordpress's Custom Post Type features.
 
-I wrote Dead Trees because I wanted to be able to post to my blog when I read a book, but I didn't want to be required to actually write a post about the book if I didn't want to.
+I wrote Dead Trees because I want to post on my blog when I read a book, but only sometimes want to write about the book. Dead Trees lets me, (and you!), do that.
 
-## New in Version 1.1: Book Covers from OpenLibrary.org
+## New in Version 1.1: Multiple Book Cover Sources
 
-In version 1.1 book covers will be fetched from OpenLibrary.org or Amazon, depending on which you have selected as your preferred source, and if you have set your Amazon API credentials. If you choose OpenLibrary.org as your preferred source the plugin will attempt to get a book cover from Open Library, and fall back to Amazon if Open Library doesn't have the cover. The opposite happens, (Amazon first, fall back to Open Library), if Amazon is set as your preferred source.
+In version 1.1 book covers will be fetched from [OpenLibrary.org](https://openlibrary.org/), [LibraryThing](https://www.librarything.com/), or Amazon, depending on the settings, and what's available where.
 
-OpenLibrary.org does not require any API crededials, so cover art should work without any special configuration.
+If you have set your Amazon API credentials, you can choose to look for a cover at Amazon either first or last: first for people who are working on building affiliate income from Amazon, and have plenty of [API quota](https://docs.aws.amazon.com/AWSECommerceService/latest/DG/TroubleshootingApplications.html#efficiency-guidelines), or last for people who prefer to promote independent book sources or can't or don't want to use Amazon's services.
+
+For non-Amazon book covers, OpenLibrary.org is checked first as it provides larger images than other options. If OpenLibrary.org doesn't have a cover for a book and you have set a LibraryThing API key we will fall back to looking for a cover at LibraryThing.
+
+OpenLibrary.org does not require any API crededials or any special configuration.
 
 ## How it works
 To post a book that you read, you'll go to the admin of your site and choose "Books" from the main menu. You can then enter the title of the book, the author's name(s), ISBN, Amazon's ASIN, (likely the ISBN), and, if you wish, you may write about the book, but you don't have to if you don't want to. 
@@ -27,7 +31,7 @@ Currently Dead Trees can auto-generate affiliate links to Amazon.com, Amazon.ca,
 ### Amazon API Credentials
 In order to grab a book's cover art from Amazon you need access to Amazon's Product Advertising API. It's free, and you can tie it to your existing Amazon account. Go to http://affiliate-program.amazon.com and sign in to your affiliate account, then click the "Product Advertising API" tab at the top and follow the directions to sign up. Once you are set up with the Product Advertising API enter your Key ID and Secret Key in Settings > Dead Trees in your Wordpress admin.
 
-### LibraryThing API Credentials
+### LibraryThing API Key
 The [LibraryThing CoverThing API](https://blog.librarything.com/main/2008/08/a-million-free-covers-from-librarything/) requires a free API key. 
 
 #### Getting a LibraryThing API Key
