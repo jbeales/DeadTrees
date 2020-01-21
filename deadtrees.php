@@ -176,6 +176,7 @@ class DeadTrees {
 		$url = '';
 		if(!empty($isbn)) {
 			$url = "http://covers.openlibrary.org/b/isbn/$isbn-L.jpg?default=false";
+			// http://covers.openlibrary.org/b/isbn/0553582011-L.jpg?default=false
 		}
 
 		return $url;
@@ -726,43 +727,25 @@ class DeadTrees {
   		}
 	}
 
-	protected function update_cover($post_id) {
+	/**
+	 * Get a cover URL and attach it to the current post.
+	 * @param  string $url The URL of a potential cover
+	 * @param  int    $post_id The Post ID of the book that the cover should be attached to.
+	 * @return bool   True if a cover was retrieved & saved. False otherwise.
+	 */
+	protected function set_cover_from_url( $url, $post_id ) {
 
-		$cover_sources = array(
-			'librarything',
-			'openlibrary'
-		);
+		if(!empty($url)) {
 
-		if(get_option('dt_amazon_as_first_cover_source', false)) {
-			array_unshift($cover_sources, 'amazon');
-		} else {
-			array_push($cover_sources, 'amazon');
-		}
+			$cover = wp_remote_get($url);
 
-		$book_info = $this->get_bookbox_info($post_id, true);
+			self::_maybe_log_item('Length: ' . print_r($cover, true));
 
-		$coverurl = '';
-		foreach($sources as $source) {
-
-			if( 'amazon' === $source ) {
-				$coverurl = $this->_get_amazon_cover_url( $book_info['asin_amazon.com'] );
-			} else if( 'librarything' === $source ) {
-				$coverurl = $this->_get_librarything_cover_url( $book_info['asin_amazon.com'] );
-			} else if( 'openlibrary' === $source ) {
-				$coverurl = $this->_get_openlibrary_cover_url( $book_info['isbn'] );
-			}
-
-			if(!empty($coverurl)) {
-				break;
-			}
-		}
-
-
-		if(!empty($coverurl)) {
-
-			$cover = wp_remote_get($coverurl);
-
-			if(!is_wp_error( $cover ) && $cover['http_response']->get_status() != 404) {
+			if(
+				!is_wp_error( $cover ) && 
+				$cover['http_response']->get_status() != 404 && 
+				strlen( $cover['body'] ) > 100 	// Try to avoid saving a 1x1 transparent gif returned by some services.
+			) {
 				$filename = wp_upload_dir();
 
 				// we're assuming that this is a jpeg for now. Hopefully it is.
@@ -786,9 +769,50 @@ class DeadTrees {
 					$this->_set_cover_attachment_id($cover_post_id, $post_id);
 					update_post_meta($post_id, '_dt_cover_source', $source );
 				}
+
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	protected function update_cover($post_id) {
+
+		$cover_sources = array(
+			'openlibrary',
+			'librarything',
+		);
+
+		if(get_option('dt_amazon_as_first_cover_source', false)) {
+			array_unshift($cover_sources, 'amazon');
+		} else {
+			array_push($cover_sources, 'amazon');
+		}
+
+		$book_info = $this->get_bookbox_info($post_id, true);
+
+		$coverurl = '';
+		foreach($cover_sources as $source) {
+
+			if( 'amazon' === $source ) {
+				$coverurl = $this->_get_amazon_cover_url( $book_info['asin_amazon.com'] );
+			} else if( 'librarything' === $source ) {
+				$coverurl = $this->_get_librarything_cover_url( $book_info['isbn'] );
+			} else if( 'openlibrary' === $source ) {
+				$coverurl = $this->_get_openlibrary_cover_url( $book_info['isbn'] );
+			}
+
+			if(!empty($coverurl)) {
+				$updated = $this->set_cover_from_url( $coverurl, $post_id );
+				if($updated) {
+					break;
+				}
 			}
 		}
 	}
+
+
 
 
 	public function get_raw_bookbox_info($post_id = NULL, $force_fresh = false) {
@@ -939,15 +963,6 @@ class DeadTrees {
 
 
 	public function show_books_in_normal_pages( $query ) {
-
-/*
-		$this->allowable_display_locations  = array( 
-			'none' => __('Book section only', 'deadtree'),
-			'tag' => __('Book section and tag archives', 'deadtree'),
-			'tag|home' => __('Book section, tag and date archive pages', 'deadtree')
-		);
-
- */			
 
 		$include_locations = get_option('dt_include_books');
 
