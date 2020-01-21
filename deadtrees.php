@@ -124,7 +124,7 @@ class DeadTrees {
 			'ResponseGroup' => 'Images',
 			'Version' => '2011-08-01',
 			'Timestamp' => gmdate('Y-m-d\TH:i:s\Z', time()),
-			'AssociateTag' => 'johnbeales-20'
+			'AssociateTag' => $this->get_amazon_affiliate_id('amazon.com')
 		);
 
 		uksort( $request_params, 'strnatcmp');
