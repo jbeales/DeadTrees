@@ -27,6 +27,14 @@ Currently Dead Trees can auto-generate affiliate links to Amazon.com, Amazon.ca,
 ### Amazon API Credentials
 In order to grab a book's cover art from Amazon you need access to Amazon's Product Advertising API. It's free, and you can tie it to your existing Amazon account. Go to http://affiliate-program.amazon.com and sign in to your affiliate account, then click the "Product Advertising API" tab at the top and follow the directions to sign up. Once you are set up with the Product Advertising API enter your Key ID and Secret Key in Settings > Dead Trees in your Wordpress admin.
 
+### LibraryThing API Credentials
+The [LibraryThing CoverThing API](https://blog.librarything.com/main/2008/08/a-million-free-covers-from-librarything/) requires a free API key. 
+
+#### Getting a LibraryThing API Key
+- Sign Up for [LibraryThing](https://www.librarything.com/)
+- Fill out the [Get a Developer Key](https://www.librarything.com/services/keys.php) form on LibraryThing.
+- An API key will be E-mailed to you.
+
 ## Templating
 Dead Trees creates some template tags for you. Here are the important ones. If you want to see the not-so-important ones look in template_tags.php, they're all there:
 
