@@ -13,7 +13,7 @@ If you have set your Amazon API credentials, you can choose to look for a cover 
 
 For non-Amazon book covers, OpenLibrary.org is checked first as it provides larger images than other options. If OpenLibrary.org doesn't have a cover for a book and you have set a LibraryThing API key we will fall back to looking for a cover at LibraryThing.
 
-OpenLibrary.org does not require any API crededials or any special configuration.
+OpenLibrary.org does not require any API credentials or any special configuration.
 
 ## How it works
 To post a book that you read, you'll go to the admin of your site and choose "Books" from the main menu. You can then enter the title of the book, the author's name(s), ISBN, Amazon's ASIN, (likely the ISBN), and, if you wish, you may write about the book, but you don't have to if you don't want to. 
