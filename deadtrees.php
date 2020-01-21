@@ -111,59 +111,62 @@ class DeadTrees {
 
 		//  gmdate('Y-m-d\TH:i:s\Z', time());
 
+		if(!empty($asin)) {
 
-		$request_params = array(
-			'Service' => 'AWSECommerceService',
-			'AWSAccessKeyId' =>  $this->_get_aws_key_id(),
-			'Operation' => 'ItemLookup',
-			'ItemId' => $asin,
-			'ResponseGroup' => 'Images',
-			'Version' => '2011-08-01',
-			'Timestamp' => gmdate('Y-m-d\TH:i:s\Z', time()),
-			'AssociateTag' => $this->get_amazon_affiliate_id('amazon.com')
-		);
+			$request_params = array(
+				'Service' => 'AWSECommerceService',
+				'AWSAccessKeyId' =>  $this->_get_aws_key_id(),
+				'Operation' => 'ItemLookup',
+				'ItemId' => $asin,
+				'ResponseGroup' => 'Images',
+				'Version' => '2011-08-01',
+				'Timestamp' => gmdate('Y-m-d\TH:i:s\Z', time()),
+				'AssociateTag' => $this->get_amazon_affiliate_id('amazon.com')
+			);
 
-		uksort( $request_params, 'strnatcmp');
+			uksort( $request_params, 'strnatcmp');
 
-		if(defined('PHP_QUERY_RFC3986')) {
-			$stringtosign = http_build_query($request_params, '', '&', PHP_QUERY_RFC3986);
-		} else {
-			$stringtosign = http_build_query($request_params, '', '&');
-		}
-
-		
-
-		$url = 'https://webservices.amazon.com/onca/xml?' . $stringtosign;
-
-		$prefix = "GET\n";
-		$prefix .= "webservices.amazon.com\n";
-		$prefix .= "/onca/xml\n";
-
-		$stringtosign = $prefix . $stringtosign;
-
-		$sig = hash_hmac('sha256', $stringtosign, $this->_get_aws_secret_key(), true);
-		$sig = base64_encode($sig);
-
-		$url .= '&Signature='.urlencode($sig);
-
-		$result = wp_remote_request($url);
-
-
-		if(200 == $result['response']['code']) {
-
-			$result_obj = new SimpleXMLElement($result['body']);
-
-			if($result_obj->Items && $result_obj->Items->Item->LargeImage) {
-				$image = $result_obj->Items->Item->LargeImage;
-				return $image->URL;
+			if(defined('PHP_QUERY_RFC3986')) {
+				$stringtosign = http_build_query($request_params, '', '&', PHP_QUERY_RFC3986);
 			} else {
-				$this->_maybe_log_item($result_obj);
+				$stringtosign = http_build_query($request_params, '', '&');
 			}
 
-		} else {
-			$this->_maybe_log_item($result);
+			
+
+			$url = 'https://webservices.amazon.com/onca/xml?' . $stringtosign;
+
+			$prefix = "GET\n";
+			$prefix .= "webservices.amazon.com\n";
+			$prefix .= "/onca/xml\n";
+
+			$stringtosign = $prefix . $stringtosign;
+
+			$sig = hash_hmac('sha256', $stringtosign, $this->_get_aws_secret_key(), true);
+			$sig = base64_encode($sig);
+
+			$url .= '&Signature='.urlencode($sig);
+
+			$result = wp_remote_request($url);
+
+
+			if(200 == $result['response']['code']) {
+
+				$result_obj = new SimpleXMLElement($result['body']);
+
+				if($result_obj->Items && $result_obj->Items->Item->LargeImage) {
+					$image = $result_obj->Items->Item->LargeImage;
+					return $image->URL;
+				} else {
+					$this->_maybe_log_item($result_obj);
+				}
+
+			} else {
+				$this->_maybe_log_item($result);
+			}
+
 		}
-		return false;
+		return '';
 		
 	}
 
