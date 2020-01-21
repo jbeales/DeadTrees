@@ -37,7 +37,6 @@ class DeadTrees {
 
 	protected $allowable_display_locations;
 
-	protected $cover_sources;
 
 	protected $default_affiliate_ids = array();
 
@@ -70,11 +69,6 @@ class DeadTrees {
 			'tag' => __('Book section and tag archives', 'deadtree'),
 			'tag|home' => __('Book section, tag and date archive pages', 'deadtree')
 		);
-
-		$this->cover_sources = [
-			'openlibrary' => __('Open Library', 'deadtree'),
-			'amazon' => __('Amazon', 'deadtree')
-		];
 
 		if(get_option('dt_default_to_dev_affiliate', true)) {
 			$this->default_affiliate_ids = array(
@@ -186,6 +180,18 @@ class DeadTrees {
 
 		return $url;
 
+	}
+
+	protected function _get_librarything_cover_url( $isbn ) {
+		$url = '';
+		if(!empty($isbn)) {
+			$devkey = get_option('dt_librarything_api_key', false);
+			if($devkey) {
+				$url = "http://covers.librarything.com/devkey/$devkey/large/isbn/$isbn";	
+			}
+		}
+
+		return $url;
 	}
 
 
@@ -722,28 +728,28 @@ class DeadTrees {
 
 	protected function update_cover($post_id) {
 
+		$cover_sources = array(
+			'librarything',
+			'openlibrary'
+		);
 
-		$preferred = get_option('dt_default_cover_source');
+		if(get_option('dt_amazon_as_first_cover_source', false)) {
+			array_unshift($cover_sources, 'amazon');
+		} else {
+			array_push($cover_sources, 'amazon');
+		}
+
 		$book_info = $this->get_bookbox_info($post_id, true);
 
-		
-
-		$sources = $this->cover_sources;
-		uksort($sources, function($elm) use ($preferred) {
-			if( $preferred == $elm )  {
-				return -1;
-			}
-
-			return 1;
-		});
-
 		$coverurl = '';
-		foreach($sources as $source => $sourcename) {
+		foreach($sources as $source) {
 
 			if( 'amazon' === $source ) {
-				$coverurl = $this->_get_amazon_cover_url($book_info['asin_amazon.com']);
+				$coverurl = $this->_get_amazon_cover_url( $book_info['asin_amazon.com'] );
+			} else if( 'librarything' === $source ) {
+				$coverurl = $this->_get_librarything_cover_url( $book_info['asin_amazon.com'] );
 			} else if( 'openlibrary' === $source ) {
-				$coverurl = $this->_get_openlibrary_cover_url($book_info['isbn']);
+				$coverurl = $this->_get_openlibrary_cover_url( $book_info['isbn'] );
 			}
 
 			if(!empty($coverurl)) {
