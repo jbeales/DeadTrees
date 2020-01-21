@@ -281,10 +281,10 @@ class DeadTrees {
 		return $dimensions;
 	}
 
-	public function populate_default_cover_source_field( $args ) {
+	public function populate_amazon_as_first_cover_source( $args ) {
 
 		$old_opt = get_option( 'dt_default_cover_source' );
-		$opt = get_option( 'dt_amazon_as_first_cover_source' );
+		$opt = get_option( 'dt_amazon_as_first_cover_source', false );
 
 		if(!is_bool($opt)) {
 			if($old_opt == 'amazon') {
@@ -299,7 +299,7 @@ class DeadTrees {
 		}
 
 
-		echo '<label for="dt_amazon_as_first_cover_soruce"><input type="checkbox"
+		echo '<label for="dt_amazon_as_first_cover_source"><input type="checkbox"
 			name="dt_amazon_as_first_cover_source" id="dt_amazon_as_first_cover_source" 
 			value="yes"'. $selector . '>' . __('Try to get cover art from Amazon first', 'deadtree' ) . '</label>';
 
@@ -458,10 +458,9 @@ class DeadTrees {
 		add_settings_field('dt_cover_width', __('Width:', 'deadtree'), array(&$this, 'populate_cover_size_settings_field'), 'deadtree', 'dt_default_cover_sizes', 'width');
 		add_settings_field('dt_cover_height', __('Height:', 'deadtree'), array(&$this, 'populate_cover_size_settings_field'), 'deadtree', 'dt_default_cover_sizes', 'height');
 
-		register_setting('deadtree_options', 'dt_default_cover_source', array(&$this, 'validate_setting_checkbox'));
-		
-		add_settings_section('dt_default_cover_source', __('Preferred Cover Art Source', 'deadtree'), [&$this, 'cover_source_settings_section_text'], 'deadtree');
-		add_settings_field('dt_default_cover_source', __('Try Amazon First?', 'deadtree'), [&$this, 'populate_default_cover_source_field'], 'deadtree', 'dt_default_cover_source');
+		register_setting('deadtree_options', 'dt_amazon_as_first_cover_source', array(&$this, 'validate_setting_checkbox'));
+		add_settings_section('dt_amazon_as_first_cover_source', __('Preferred Cover Art Source', 'deadtree'), [&$this, 'cover_source_settings_section_text'], 'deadtree');
+		add_settings_field('dt_amazon_as_first_cover_source', __('Try Amazon First?', 'deadtree'), [&$this, 'populate_amazon_as_first_cover_source'], 'deadtree', 'dt_amazon_as_first_cover_source');
 
 
 		
