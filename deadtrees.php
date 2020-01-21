@@ -329,23 +329,24 @@ class DeadTrees {
 			$credential = $creds[$field];
 		}
 
-		echo '<input type="text" name="dt_amazon_api_creds[' . esc_attr($field) .']" value="' . esc_attr($credential) .'" />';
+		echo '<input type="text" name="dt_amazon_api_creds[' . esc_attr($field) .']" value="' . esc_attr($credential) .'" >';
 
 	}
 
 
-	public function librarything_api_creds_section_text() {
+	public function librarything_api_key_section_text() {
 		echo '<p>' . __('This is the API key from LibraryThing that lets you fetch book covers from their database.', 'deadtree') . '</p>';
 	}
 
-	public function validate_librarything_api_creds($input) {
+	public function validate_librarything_api_key($input) {
 		return $input;
 	}
 
 
 
 	public function populate_librarything_api_key_field($field) {
-		echo 'librarything field';
+		$key = get_option('dt_librarything_api_key', '');
+		echo '<input type="text" name="dt_librarything_api_key" id="dt_librarything_api_key" value="' . esc_attr($key) . '">';
 	}
 
 	public function default_to_dev_affiliate_setting_explanation() {
@@ -360,7 +361,7 @@ class DeadTrees {
 			$checker = ' checked="checked"';
 		}
 
-		echo '<input type="checkbox" name="dt_default_to_dev_affiliate" value="yes"' . $checker .' />';
+		echo '<input type="checkbox" name="dt_default_to_dev_affiliate" value="yes"' . $checker .'>';
 	}
 
 	public function validate_setting_include_books($input) {
@@ -465,9 +466,9 @@ class DeadTrees {
 
 
 
-		register_setting( 'deadtree_options', 'dt_librarything_api_creds' ,array(&$this, 'validate_librarything_api_creds'));
-		add_settings_section('dt_librarything_api_creds', __('LibraryThing API Credentials', 'deadtree'), array(&$this, 'librarything_api_creds_section_text'), 'deadtree');
-		add_settings_field('dt_librarything_api_key', __('LibraryThing API Key', 'deadtree'), array(&$this, 'populate_librarything_api_key_field'), 'deadtree',  'dt_librarything_api_creds', 'dt_librarything_api_key');
+		register_setting( 'deadtree_options', 'dt_librarything_api_key' ,array(&$this, 'validate_librarything_api_key'));
+		add_settings_section('dt_librarything_api_key', __('LibraryThing API Credentials', 'deadtree'), array(&$this, 'librarything_api_key_section_text'), 'deadtree');
+		add_settings_field('dt_librarything_api_key', __('LibraryThing API Key', 'deadtree'), array(&$this, 'populate_librarything_api_key_field'), 'deadtree',  'dt_librarything_api_key', 'dt_librarything_api_key');
 
 		register_setting('deadtree_options', 'dt_include_books', array(&$this, 'validate_setting_include_books'));
 		add_settings_section('dt_include_books', __('Where should we show books on your site?', 'deadtree'), array(&$this, 'setting_include_books_section_text'), 'deadtree');
