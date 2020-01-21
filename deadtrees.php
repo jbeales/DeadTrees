@@ -40,22 +40,18 @@ class DeadTrees {
 
 	protected $default_affiliate_ids = array();
 
-	const debug = true;
+	
 
 
 	protected function _maybe_log_item($item) {
-		if(self::debug) {
-
-			$debugfile = $this->basedir . '/debug.txt';
-
+		if(defined('WP_DEBUG') && WP_DEBUG) {
 			ob_start();
 			print_r($item);
 			echo "\n\r\n\r";
 			debug_print_backtrace();
 			echo "\n\r===================\n\r";
-
 			$debugstr = ob_get_clean();
-			file_put_contents($debugfile, $debugstr, FILE_APPEND);
+			error_log($debugstr);
 		}
 	}
 
@@ -732,7 +728,7 @@ class DeadTrees {
 	 * @param  int    $post_id The Post ID of the book that the cover should be attached to.
 	 * @return bool   True if a cover was retrieved & saved. False otherwise.
 	 */
-	protected function set_cover_from_url( $url, $post_id ) {
+	protected function set_cover_from_url( $url, $post_id, $source ) {
 
 		if(!empty($url)) {
 
@@ -803,7 +799,7 @@ class DeadTrees {
 			}
 
 			if(!empty($coverurl)) {
-				$updated = $this->set_cover_from_url( $coverurl, $post_id );
+				$updated = $this->set_cover_from_url( $coverurl, $post_id, $source );
 				if($updated) {
 					break;
 				}
