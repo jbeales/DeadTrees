@@ -4,7 +4,7 @@ Tags: books, reading, library, book,
 Requires at least: 3.0
 Requires PHP: 5.4
 Tested up to: 5.3.2
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,9 @@ I'm not sure about other caching plugins, but I suspect they'll behave in a simi
 4. This is the default affiliate link section in the Twenty Eleven theme.
 
 == Changelog ==
+
+= 1.1.1 & 1.1.2 = 
+* Tweak deployment & appearance in WordPress plugin repository.
 
 = 1.1 =
 * Add: [Open Library](https://openlibrary.org/) and [LibraryThing](https://www.librarything.com) as sources of book covers.
