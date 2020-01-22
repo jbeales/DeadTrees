@@ -5,7 +5,7 @@ It's slightly influenced by other "My Library" type of plugins, such as the whol
 
 I wrote Dead Trees because I want to post on my blog when I read a book, but only sometimes want to write about the book. Dead Trees lets me, (and you!), do that.
 
-## New in Version 1.1: Multiple Book Cover Sources
+### New in Version 1.1: Multiple Book Cover Sources
 
 In version 1.1 book covers will be fetched from [OpenLibrary.org](https://openlibrary.org/), [LibraryThing](https://www.librarything.com/), or Amazon, depending on the settings, and what's available where.
 
@@ -15,12 +15,16 @@ For non-Amazon book covers, OpenLibrary.org is checked first as it provides larg
 
 OpenLibrary.org does not require any API credentials or any special configuration.
 
-## How it works
+### How it works
 To post a book that you read, you'll go to the admin of your site and choose "Books" from the main menu. You can then enter the title of the book, the author's name(s), ISBN, Amazon's ASIN, (likely the ISBN), and, if you wish, you may write about the book, but you don't have to if you don't want to. 
 
 Hit publish and the DeadTrees will grab the cover art from Open Library or Amazon and publish your book.
 
 You can also tag the book, just like a post. The pool of tags is shared between posts & books.
+
+### Thanks
+
+Thanks to OpenLibrary.org and LibraryThing for providing open book cover data. APIs like these that share information make the independent web possible and fun. 
 
 ## Installation
 Install Dead Trees like a normal Wordpress plugin. It should work out of the box, but it'll work better if you set up a couple of extra things:

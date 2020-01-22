@@ -39,7 +39,11 @@ Development is on GitHub at https://github.com/jbeales/DeadTrees
 
 Report issues at https://github.com/jbeales/DeadTrees/issues
 
-See the public side in action, with some custom templating: http://johnbeales.com/books/
+See the public side in action, with some custom templating: https://johnbeales.com/books/
+
+## Thanks
+
+Thanks to OpenLibrary.org and LibraryThing for providing open book cover data. APIs like these that share information make the independent web possible and fun. 
 
 
 == Installation ==
